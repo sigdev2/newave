@@ -5,7 +5,7 @@ New c-like preprocessor based on Boost Wave with additional interface
 
  - **\_\_FILENAME\_\_** - full file name
  - **\_\_BASENAME\_\_** - file base name
- - **\_\_FILENAME\_WORD\_\_** - file name with replaced space to underscore
+ - **\_\_FILENAME\_WORD\_\_** - file name with replaced [^A-z0-9] to underscore
 
 # Planed dircetives
 
