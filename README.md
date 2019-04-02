@@ -1,14 +1,11 @@
 # Newave
 New c-like preprocessor based on Boost Wave with additional interface
 
-# Planed arguments settings
-
- - **-v** - version
- - **-c** - config, included json with all newt arguments
-
 # Planed dircetives
 
- - **\#alias** *new_directive_name* *directive* *directive_arguments*  
+In all new directives may use macroses.
+
+ - **\#alias** *new_directive_name* *directive1* *directive1_arguments* ; *directive2* *directive2_arguments* ; ...  
    , where:  
      - *new_directive_name* - new directive neme without spaces \[A-z]\[A-z0-9]\*  
      - *directive* - old directive name  without spaces \[A-z]\[A-z0-9]\*  
@@ -17,4 +14,20 @@ New c-like preprocessor based on Boost Wave with additional interface
      - %s - replace to all remaining new arguments
      - %s% - replace to one word from new arguments
      - %s##word, word##%s% .. etc - use ## symbols from without space inserting
-     - \%s or \%s% or \##- to ignore replace
+     - \%s, \;, \%s% or \##- to ignore replace
+
+   This directive declare new directive and replaces with empty string if success.
+
+ - **\#system** *command_line*  
+   , where:  
+     - *command_line* - any command line command
+
+   This directive call any command line command and replaces his STDOUT.
+   
+ - **\#export** *postfix*  
+       *CODE*  
+   **\#endexport**  
+   , where:  
+     - *postfix* - postfix to file name, may be empty
+     
+   Save *CODE* to file with name \_\_FILE\_\_.<counter + 1>[.*postfix*] and replaces with empty string if success.
