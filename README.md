@@ -5,7 +5,6 @@ New c-like preprocessor based on Boost Wave with additional interface
 
  - **\_\_FILENAME\_\_** - full file name
  - **\_\_BASENAME\_\_** - file base name
- - **\_\_FILENAME\_WORD\_\_** - file name with replaced [^A-z0-9] to underscore
 
 # Planed dircetives
 
@@ -38,7 +37,9 @@ New c-like preprocessor based on Boost Wave with additional interface
 
 # Planed build-in functions
 
-In all new directives may use macroses. But same times need get name of macros by other macros value. In this new directives use function \_\_GET\_MACROS\_BY\_MACROS\_\_(*macro_name*)
+In all new directives may use macroses. But same times need get name of macros by other macros value. In this new directives use function \_\_GET\_MACROS\_BY\_MACROS\_\_(*macro_name*). To convert macros value to safe macro name use function \_\_TO\_MACRO\_NAME\_\_(*macro_name*), but \_\_GET\_MACROS\_BY\_MACROS\_\_ make it automatical.
+
+All function insert only when directive is called, and use macroses of current call-space.
 
 # Benefits of using
 
@@ -53,7 +54,7 @@ Example declare aliases:
     #alias pystyle export py
     #alias endpy endexport; system py2cpp.exe __FILE__.0.py; system del __FILE__.0.py
     #alias pyinclude system py2cpp.exe
-    #alias guard ifndef __GET_MACROS_BY_MACROS__(__FILENAME_WORD__); define __GET_MACROS_BY_MACROS__(__FILENAME_WORD__)
+    #alias guard ifndef __GET_MACROS_BY_MACROS__(__FILENAME__); define __GET_MACROS_BY_MACROS__(__FILENAME__)
     #alias endguard endif
 
 Example use in code:
