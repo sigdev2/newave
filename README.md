@@ -3,8 +3,10 @@ New c-like preprocessor based on Boost Wave with additional interface
 
 # Planed predefined macros
 
+ - **\_\_DIR\_\_** - full file path
  - **\_\_FILENAME\_\_** - full file name
  - **\_\_BASENAME\_\_** - file base name
+ - **\_\_FILEPATH\_\_** - \_\_DIR\_\_ with full file name, \_\_FILE\_\_ alias
 
 # Planed dircetives
 
@@ -34,7 +36,15 @@ New c-like preprocessor based on Boost Wave with additional interface
      - *postfix* - postfix to file name, may be empty
      
    Save *CODE* to file with name \_\_FILE\_\_.<counter + 1>[.*postfix*] and replaces with empty string if success.
-   
+
+ - **\#use_context** *file*  
+       *CODE*  
+   **\#endcontext**  
+   , where:  
+     - *file* - file that preprocessor use as context
+     
+   Switch context of macros \_\_DIR\_\_, \_\_FILENAME\_\_, \_\_BASENAME\_\_, \_\_FILEPATH\_\_ to specified file
+
 # Planing modifed directive
 
  - **#include** *mask_or_path* *<once|\[0-9\]\*>*
@@ -80,7 +90,11 @@ Example declare aliases:
     #alias guard ifndef __GET_MACROS_BY_MACROS__(__FILENAME__); define __GET_MACROS_BY_MACROS__(__FILENAME__)
     #alias endguard endif
     
-    //
+    // include once
+    #alias include_once use_context %s; guard; #include %s; endcontext
+    
+    // try like something like this
+    #alias export_exec export %s%; system %s; endexport
 
 Example use in code:
 
