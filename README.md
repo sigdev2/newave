@@ -93,6 +93,10 @@ Example declare aliases:
     // include once
     #alias include_once use_context %s; guard; #include %s; endcontext
     
+    // regexp - todo
+    #alias regexp define __RANDOM_123 %s; export rx
+    #alias regexpend endexport; system sed __RANDOM_123 __FILE__.0.rx > __FILE__.0.rx; include __FILE__.0.rx
+    
     // try like something like this
     #alias export_exec export %s%; system %s; endexport
 
