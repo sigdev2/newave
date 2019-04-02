@@ -93,9 +93,9 @@ Example declare aliases:
     // include once
     #alias include_once use_context %s; guard; #include %s; endcontext
     
-    // regexp - todo
+    // regexp
     #alias regexp define __RANDOM_123 %s; export rx
-    #alias regexpend endexport; system sed __RANDOM_123 __FILE__.0.rx > __FILE__.0.rx; include __FILE__.0.rx
+    #alias endrx endexport; system sed __RANDOM_123 __FILE__.0.rx; system del __FILE__.0.rx; undef __RANDOM_123
     
     // try like something like this
     #alias export_exec export %s%; system %s; endexport
@@ -109,8 +109,10 @@ Example use in code:
         int main(int argc, char *argv[])
         {
         #pystyle
-            if argc == 1:
-                print(u'Hello world')
+        #    regexp s/Goodbye/Hello/g
+                 if argc == 1:
+                     print(u'Goodbye world')
+        #    endrx
         #endpy
         #pyinclude "your_python_styled_code.py"
              return 0;
