@@ -1,7 +1,16 @@
 # Newave
 New c-like preprocessor based on Boost Wave with additional interface
 
-# Planed predefined macros
+# Parameters
+
+ - alias in global space
+ - system in global space
+ - predefined macros in global space
+ - enable system
+
+# Pedefined macros
+
+If not flag use onle in alias space.
 
  - **\_\_DIR\_\_** - full file path
  - **\_\_FILENAME\_\_** - full file name
@@ -9,9 +18,9 @@ New c-like preprocessor based on Boost Wave with additional interface
  - **\_\_FILEPATH\_\_** - \_\_DIR\_\_ with full file name, \_\_FILE\_\_ alias
  - **\_\_IS_MODIFED_PREPROCESSOR\_\_** - always true for this preprocessor
 
-# Planed dircetives
+# Dircetives
 
- - **\#alias** *new_directive_name* *directive1* *directive1_arguments* ; *directive2* *directive2_arguments* ; ...  
+ - **\#pragma alias** *new_directive_name* *directive1* *directive1_arguments* ; *directive2* *directive2_arguments* ; ...  
    , where:  
      - *new_directive_name* - new directive neme without spaces \[A-z\]\[A-z0-9\]\*  
      - *directive* - old directive name  without spaces \[A-z\]\[A-z0-9\]\*  
@@ -22,21 +31,19 @@ New c-like preprocessor based on Boost Wave with additional interface
      - %s##word, word##%s% .. etc - use ## symbols from without space inserting
      - \%s, \;, \%s% or \##- to ignore replace
 
-   This directive declare new directive and replaces with empty string if success. Alisases with identical names replace each other. Can't undefine alias.
+   This directive declare new directive and replaces with empty string if success. Alisases with identical names replace each other. Can't undefine alias.  
+    Use if no flag global:  
+    **\#pragma alias** <alias>
 
- - **\#system** *command_line*  
+ - **\#pragma system** *command_line*  
    , where:  
      - *command_line* - any command line command
 
-   This directive call any command line command and replaces his STDOUT.
-   
- - **\#export** *postfix*  
-       *CODE*  
-   **\#endexport**  
-   , where:  
-     - *postfix* - postfix to file name, may be empty
-     
-   Save *CODE* to file with name \_\_FILE\_\_.<counter + 1>[.*postfix*] and replaces with empty string if success.
+    This directive call any command line command and replaces his STDOUT.  
+    Use if no flag global:  
+    **\#pragma system** <programm_name>  
+        *CODE_TO_STDIN*
+    **\#pragma endsystem**  
 
  - **\#use_context** *file*  
        *CODE*  
