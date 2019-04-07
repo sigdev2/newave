@@ -10,7 +10,7 @@ New c-like preprocessor based on Boost Wave with additional interface
 
 # Pedefined macros
 
-If not flag use onle in alias space.
+If not flag use only in alias space.
 
  - **\_\_DIR\_\_** - full file path
  - **\_\_FILENAME\_\_** - full file name
@@ -53,11 +53,11 @@ If not flag use onle in alias space.
      
    Switch context of macros \_\_DIR\_\_, \_\_FILENAME\_\_, \_\_BASENAME\_\_, \_\_FILEPATH\_\_ to specified file
 
-# Planing modifed directive
+# Modifed directive
 
  - **#include** *mask_or_path* *<once|\[0-9\]\*>*
 
-# Planing declared aliases of directives
+# Declared aliases of directives
 
  - require_once = import_once = inc_once = include_once = include %s once
  - require = import = inc = include
@@ -70,7 +70,7 @@ If not flag use onle in alias space.
  - alias = directive = direct = declare = declaration = decl
  - system = sys = shell = exec = execute
 
-# Planed build-in functions
+# Build-in functions
 
 In all new directives may use macroses. But same times need get name of macros by other macros value. In this new directives use function \_\_GET\_MACROS\_BY\_MACROS\_\_(*macro_name*). To convert macros value to safe macro name use function \_\_TO\_MACRO\_NAME\_\_(*macro_name*), but \_\_GET\_MACROS\_BY\_MACROS\_\_ make it automatical.
 
