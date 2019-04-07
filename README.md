@@ -41,8 +41,8 @@ If not flag use only in alias space.
 
     This directive call any command line command and replaces his STDOUT.  
     Use if no flag global:  
-    **\#pragma system** <programm_name>  
-        *CODE_TO_STDIN*
+    **\#pragma system** *<programm_name>*  
+        *CODE_TO_STDIN*  
     **\#pragma endsystem**  
 
  - **\#use_context** *file*  
