@@ -1,57 +1,60 @@
 # Newave
+
 New c-like preprocessor based on Boost Wave with additional interface
 
 # Parameters
 
  - alias in global space
  - system in global space
- - predefined macros in global space
- - enable system
-
-# Pedefined macros
-
-If not flag use only in alias space.
-
- - **\_\_DIR\_\_** - full file path
- - **\_\_FILENAME\_\_** - full file name
- - **\_\_BASENAME\_\_** - file base name
- - **\_\_FILEPATH\_\_** - \_\_DIR\_\_ with full file name, \_\_FILE\_\_ alias
- - **\_\_IS_MODIFED_PREPROCESSOR\_\_** - always true for this preprocessor
+ - enable system  
 
 # Dircetives
 
- - **\#pragma alias** *new_directive_name* *directive1* *directive1_arguments* ; *directive2* *directive2_arguments* ; ...  
+ - **\#pragma alias** *new_directive_name* *directive1* *directive1_arguments*; ... ; *directiveN* *directiveN_arguments*  
    , where:  
-     - *new_directive_name* - new directive neme without spaces \[A-z\]\[A-z0-9\]\*  
-     - *directive* - old directive name  without spaces \[A-z\]\[A-z0-9\]\*  
+     - *new_directive_name* - new directive neme without spaces *\[A-z\]\[A-z0-9\]\**
+     - *directive* - old directive name  without spaces *\[A-z\]\[A-z0-9\]\**
      - *directive_arguments* - commands line with spaces and any symbols sended to old directive  
-   Arguments of new directive is appended to *directive_arguments*, but herewith you may use arguments replace %s, %s%, ## with next syntax:  
-     - %s - replace to all remaining new arguments
-     - %s% - replace to one word from new arguments
-     - %s##word, word##%s% .. etc - use ## symbols from without space inserting
-     - \%s, \;, \%s% or \##- to ignore replace
 
-   This directive declare new directive and replaces with empty string if success. Alisases with identical names replace each other. Can't undefine alias.  
+    This directive declare new directive and replaces with empty string if success. Alisases with identical names replace each other. Can't undefine alias. 
+
+    Arguments of new directive is appended to *directive_arguments*, but herewith you may use arguments replace *\%s*, *\%s\%*, *\#\#* with next syntax:  
+     - *\%s* - replace to all remaining new arguments
+     - *\%s\%* - replace to one word from new arguments
+     - *\%s\#\#word*, *word\#\#\%s\%* ... etc - use *\#\#* symbols from without space inserting
+     - *\%s*, *\;*, *\%s\%* or *\#\#*- to ignore replace  
+
+    Only in alias declaration you may use build-in macroses (non-overwritable):  
+     - **\_\_DIR\_\_** - full file path
+     - **\_\_FILENAME\_\_** - full file name
+     - **\_\_BASENAME\_\_** - file base name
+     - **\_\_FILEPATH\_\_** - *\_\_DIR\_\_* with full file name, *\_\_FILE\_\_* eqal
+     - **\_\_IS_MODIFED_PREPROCESSOR\_\_** - always true for this preprocessor  
+
+    Only in alias declaration you may use build-in functions:  
+     - **$use_context(** *file* **)** - switch context of macros *\_\_DIR\_\_*, *\_\_FILENAME\_\_*, *\_\_BASENAME\_\_*, *\_\_FILEPATH\_\_* to specified *file*, may use only as first directive in alias and change all alias
+     - **$to_macros_name(** *str* **)** - convert str to correct macros name in upper case with replace not *\[A-z0-9_\]* symbols to *_* and add forward and ended *__*
+     - **$macros_by_macros(** *macros* **)** - get name of *macros* by other macros value with use *$to_macros_name(str)*  
+
+    Functions use without spaces between *$* and *(*, function argument read before the first occurrence *)* and use with trimed spaces. Language constructions aka string quotes, comments or brackets is ignored.  
+    
+    All macroses and functions will be call only when alias is used.  
+
     Use if no flag global:  
-    **\#pragma alias** <alias>
+    
+        #pragma aliasns <alias>
 
- - **\#pragma system** *command_line*  
+ - **\#pragma system** *command* *command_arguments*  
    , where:  
-     - *command_line* - any command line command
+     - *command* - command, programm or script name used for alias
+     - *command_arguments* - any other arguments  
 
-    This directive call any command line command and replaces his STDOUT.  
+    This directive register alias for programm any command line command and replaces his STDOUT.  
     Use if no flag global:  
-    **\#pragma system** *<programm_name>*  
+    **\#pragma systemns** *<programm_name>*
+    **\#pragma systemin** *<programm_name>*  
         *CODE_TO_STDIN*  
     **\#pragma endsystem**  
-
- - **\#use_context** *file*  
-       *CODE*  
-   **\#endcontext**  
-   , where:  
-     - *file* - file that preprocessor use as context
-     
-   Switch context of macros \_\_DIR\_\_, \_\_FILENAME\_\_, \_\_BASENAME\_\_, \_\_FILEPATH\_\_ to specified file
 
 # Modifed directive
 
@@ -69,12 +72,6 @@ If not flag use only in alias space.
  - def = define = macro = macros
  - alias = directive = direct = declare = declaration = decl
  - system = sys = shell = exec = execute
-
-# Build-in functions
-
-In all new directives may use macroses. But same times need get name of macros by other macros value. In this new directives use function \_\_GET\_MACROS\_BY\_MACROS\_\_(*macro_name*). To convert macros value to safe macro name use function \_\_TO\_MACRO\_NAME\_\_(*macro_name*), but \_\_GET\_MACROS\_BY\_MACROS\_\_ make it automatical.
-
-All function insert only when directive is called, and use macroses of current call-space.
 
 # Benefits of using
 
