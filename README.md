@@ -49,9 +49,13 @@ New c-like preprocessor based on Boost Wave with additional interface
      - *command* - command, programm or script name used for alias
      - *command_arguments* - any other arguments  
 
-    This directive register alias for programm any command line command and replaces his STDOUT.  
+    This directive register next aliases for command:  
+     - *command* - use command as liner directive, replaced command *STDOUT*
+     - start*command* - use start block directive
+     - end*command* - use for command as start block directive
+
     Use if no flag global:  
-    **\#pragma systemns** *<programm_name>*
+    **\#pragma systemns** *<command_name>*
     **\#pragma systemin** *<programm_name>*  
         *CODE_TO_STDIN*  
     **\#pragma endsystem**  
