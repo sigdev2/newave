@@ -46,19 +46,20 @@ New c-like preprocessor based on Boost Wave with additional interface
 
  - **\#pragma system** *command* *command_arguments*  
    , where:  
-     - *command* - command, programm or script name used for alias
+     - *command* - command, programm or script name used for <alias_name> without extension
      - *command_arguments* - any other arguments  
 
     This directive register next aliases for command:  
-     - *command* - use command as liner directive, replaced command *STDOUT*
-     - start*command* - use start block directive
-     - end*command* - use for command as start block directive
+     - *<alias_name>* - use as liner directive, replaced *STDOUT*
+     - *begin<alias_name>* - use start block directive
+     - *end<alias_name>* - use for command as start block directive
 
     Use if no flag global:  
-    **\#pragma systemns** *<command_name>*
-    **\#pragma systemin** *<programm_name>*  
-        *CODE_TO_STDIN*  
-    **\#pragma endsystem**  
+
+        #pragma systemns <command_name>
+        #pragma systemns <programm_name>
+            CODE_TO_STDIN  
+        #pragma endsystem  
 
 # Modifed directive
 
