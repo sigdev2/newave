@@ -14,9 +14,9 @@ New c-like preprocessor based on Boost Wave with additional interface
    , where:  
      - *new_directive_name* - new directive neme without spaces *\[A-z\]\[A-z0-9\]\**
      - *directive* - old directive name  without spaces *\[A-z\]\[A-z0-9\]\**
-     - *directive_arguments* - commands line with spaces and any symbols sended to old directive  
+     - *directive_arguments* - *optionaly* arguments with spaces and any symbols sended to old directive  
 
-    This directive declare new directive and replaces with empty string if success. Alisases with identical names replace each other. Can't undefine alias. 
+    This directive declare new directive. Aliases register in **\#pragma aliasns** namespace if no flag global. if declare is success replaces with empty string. Alisases with identical names replace each other. Can't undefine alias.  
 
     Arguments of new directive is appended to *directive_arguments*, but herewith you may use arguments replace *\%s*, *\%s\%*, *\#\#* with next syntax:  
      - *\%s* - replace to all remaining new arguments
@@ -29,10 +29,11 @@ New c-like preprocessor based on Boost Wave with additional interface
      - **\_\_FILENAME\_\_** - full file name
      - **\_\_BASENAME\_\_** - file base name
      - **\_\_FILEPATH\_\_** - *\_\_DIR\_\_* with full file name, *\_\_FILE\_\_* eqal
-     - **\_\_IS_MODIFED_PREPROCESSOR\_\_** - always true for this preprocessor  
+     - **\_\_INSERT_COUNT_NUMBER\_\_** - if file insert with directive **\#pragma insert** with count number, then this macro is eqal current number of copy inserted file, else it eqal 1
+     - **\_\_IS_MODIFED_PREPROCESSOR\_\_** - always 1 for this preprocessor  
 
     Only in alias declaration you may use build-in functions:  
-     - **$use_context(** *file* **)** - switch context of macros *\_\_DIR\_\_*, *\_\_FILENAME\_\_*, *\_\_BASENAME\_\_*, *\_\_FILEPATH\_\_* to specified *file*, may use only as first directive in alias and change all alias
+     - **$use_context(** *file* **)** - switch context of macros *\_\_DIR\_\_*, *\_\_FILENAME\_\_*, *\_\_BASENAME\_\_*, *\_\_FILEPATH\_\_* to specified absolute *file* path or relative current file path, may use only as first directive in alias and change all alias
      - **$to_macros_name(** *str* **)** - convert str to correct macros name in upper case with replace not *\[A-z0-9_\]* symbols to *_* and add forward and ended *__*
      - **$macros_by_macros(** *macros* **)** - get name of *macros* by other macros value with use *$to_macros_name(str)*  
 
@@ -47,12 +48,14 @@ New c-like preprocessor based on Boost Wave with additional interface
  - **\#pragma system** *command* *command_arguments*  
    , where:  
      - *command* - command, programm or script name used for *<alias_name>* without extension
-     - *command_arguments* - any other arguments  
+     - *command_arguments* - *optionaly* any other arguments  
 
     This directive register next aliases for command:  
      - *<alias_name>* - use as liner directive, replaced to *STDOUT* of command
      - *begin<alias_name>* - start block directive for collect future *STDIN*
-     - *end<alias_name>* - end block directive, run command, put to *STDIN* this block and replace block to *STDOUT* of command
+     - *end<alias_name>* - end block directive, run command, put to *STDIN* this block and replace block to *STDOUT* of command  
+    
+    Aliases register in **\#pragma systemns** namespace if no flag global. if register is success replaces with empty string. Alisases with identical names replace each other. Can't undefine alias.  
 
     Use if no flag global:  
 
@@ -60,6 +63,13 @@ New c-like preprocessor based on Boost Wave with additional interface
         #pragma systemns begin<alias_name>
             CODE_TO_STDIN
         #pragma systemns end<alias_name>
+    
+ - **\#pragma insert** *mask_or_path1* *count1*, ... , *mask_or_pathN* *countN*  
+   , where:  
+     - *mask_or_path* - absolute file path or relative current file path, may use *glob* files mask
+     - *count* - *optionaly* *\[0-9\]\** count of inserts for file or files.  
+    
+    Replaced file by path or mask to 
 
 # Modifed directive
 
@@ -68,7 +78,7 @@ New c-like preprocessor based on Boost Wave with additional interface
 # Declared aliases of directives
 
  - require_once = import_once = inc_once = include_once = include %s once
- - require = import = inc = include
+ - require = import = inc = include = depend = depends
  - if
  - elif = else if
  - else
