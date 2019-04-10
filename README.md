@@ -1,12 +1,13 @@
 # Newave
 
-New c-like preprocessor based on Boost Wave with additional interface
+New c-like preprocessor based on Boost Wave with additional interface. May used for any languages. Promising for web development.  
 
 # Parameters
 
- - alias in global space
- - system in global space
- - enable system  
+ - **-a** - alias declare in global space
+ - **-s** - system declare in global space
+ - **-i** - insert directive may use in global space
+ - **-x** - enable *system* directives runing, if flag not specifed, then system declarations and aliases using ignored and replaced with empty string  
 
 # Dircetives
 
@@ -16,7 +17,7 @@ New c-like preprocessor based on Boost Wave with additional interface
      - *directive* - old directive name  without spaces *\[A-z\]\[A-z0-9\]\**
      - *directive_arguments* - *optionaly* arguments with spaces and any symbols sended to old directive  
 
-    This directive declare new directive. Aliases register in **\#pragma aliasns** namespace if no flag global. if declare is success replaces with empty string. Alisases with identical names replace each other. Can't undefine alias.  
+    This directive declare new directive. Aliases register in **\#pragma aliasns** namespace if no flag global. if declare is success replaces with empty string. Alisases with identical names replace each other. Can't use starndard directives names, *insert* name and aliases registred by *system* directive, an any attempt will cause an error. Aliases can't be undefined. May use only in first included *"aliases.h"*, but declared aliases may used in any files after this include, an any attempt will cause an error.  
 
     Arguments of new directive is appended to *directive_arguments*, but herewith you may use arguments replace *\%s*, *\%s\%*, *\#\#* with next syntax:  
      - *\%s* - replace to all remaining new arguments
@@ -29,7 +30,7 @@ New c-like preprocessor based on Boost Wave with additional interface
      - **\_\_FILENAME\_\_** - full file name
      - **\_\_BASENAME\_\_** - file base name
      - **\_\_FILEPATH\_\_** - *\_\_DIR\_\_* with full file name, *\_\_FILE\_\_* eqal
-     - **\_\_INSERT_COUNT_NUMBER\_\_** - if file insert with directive **\#pragma insert** with count number, then this macro is eqal current number of copy inserted file, else it eqal 1
+     - **\_\_INSERT_COUNT_NUMBER\_\_** - if file insert with directive **\#pragma insert** with specifed amount, then this macro is eqal current number starts with 1 of copy inserted file, else it eqal 1
      - **\_\_IS_MODIFED_PREPROCESSOR\_\_** - always 1 for this preprocessor  
 
     Only in alias declaration you may use build-in functions:  
@@ -55,27 +56,79 @@ New c-like preprocessor based on Boost Wave with additional interface
      - *begin<alias_name>* - start block directive for collect future *STDIN*
      - *end<alias_name>* - end block directive, run command, put to *STDIN* this block and replace block to *STDOUT* of command  
     
-    Aliases register in **\#pragma systemns** namespace if no flag global. if register is success replaces with empty string. Alisases with identical names replace each other. Can't undefine alias.  
+    Aliases register in **\#pragma aliasns** namespace if no flag global. if register is success replaces with empty string. Alisases registred with *alias* directive with identical names replace each other. Can't use starndard directives names, *insert* name and aliases registred by *system* directive can't be rewrited, and an any attempt will cause an error. Aliases can't be undefined. May use only in first included *"aliases.h"*, but declared aliases may used in any files after this include, an any attempt will cause an error.  
 
     Use if no flag global:  
 
-        #pragma systemns <alias_name>
-        #pragma systemns begin<alias_name>
+        #pragma aliasns <alias_name>
+        #pragma aliasns begin<alias_name>
             CODE_TO_STDIN
-        #pragma systemns end<alias_name>
+        #pragma aliasns end<alias_name>
     
- - **\#pragma insert** *mask_or_path1* *count1*, ... , *mask_or_pathN* *countN*  
+ - **\#pragma insert** *mask_or_path1* *amount1*, ... , *mask_or_pathN* *amountN*  
    , where:  
      - *mask_or_path* - absolute file path or relative current file path, may use *glob* files mask
-     - *count* - *optionaly* *\[0-9\]\** count of inserts for file or files.  
+     - *amount* - *optionaly* *\[0-9\]\** count of inserts for file or files.  
     
-    Replaced file by path or mask to 
+    Replaced to file's content, by order of finded. If specified amount, then repeat repeat all block of files (not every) the specified number of times.  
 
-# Modifed directive
+    Use if no flag global:  
 
- - **#include** *mask_or_path* *<once|\[0-9\]\*>*
+        #pragma insert <file>, <or_mask> 10, <file> 1
 
-# Declared aliases of directives
+# Benefits of using
+
+ - simplimentate directives syntax
+ - full graph paradigm, we may merge and split files
+ - containering many files in one easy to edit packed file
+ - easy and visual using external tools from code processing
+ - high level of codegeneration
+ - use as build system or project file
+ - collect statistic of build files, e-mailing when preprocessing  
+
+# Using and examples
+    
+Standard *"aliases.h"*:  
+
+    // include guard
+    #pragma alias guard ifndef $macros_by_macros(__FILENAME__); define $macros_by_macros(__FILENAME__)
+    #pragma alias endguard endif
+    
+    // include once
+    #pragma alias include_once $use_context(%s); pragma aliasns guard; include %s; pragma aliasns endguard
+    
+    // aliases
+    #pragma alias 
+    
+ - require_once = import_once = inc_once = include_once = include %s once
+ - require = import = inc = include = depend = depends
+ - if
+ - elif = else if
+ - else
+ - endif = fi
+ - del = delete = undef = remove
+ - def = define = macro = macros
+ - alias = directive = direct = declare = declaration = decl
+ - system = sys = shell = exec = execute
+
+Examples of *system* directive using:
+
+    // python styled code
+    #alias pystyle export py
+    #alias endpy endexport; system py2cpp.exe __FILE__.0.py; system del __FILE__.0.py
+    
+    // include python styled code
+    #alias pyinclude system py2cpp.exe
+    
+    // include once
+    #alias include_once use_context %s; guard; #include %s; endcontext
+    
+    // regexp
+    #alias regexp define __RANDOM_123 %s; export rx
+    #alias endrx endexport; system sed __RANDOM_123 __FILE__.0.rx; system del __FILE__.0.rx; undef __RANDOM_123
+    
+    // try like something like this
+    #alias export_exec export %s%; system %s; endexport
 
  - require_once = import_once = inc_once = include_once = include %s once
  - require = import = inc = include = depend = depends
@@ -88,14 +141,6 @@ New c-like preprocessor based on Boost Wave with additional interface
  - alias = directive = direct = declare = declaration = decl
  - system = sys = shell = exec = execute
 
-# Benefits of using
-
- - simplimentate directives syntax
- - full graph paradigm, we may merge and split files
- - containering many files in one easy to edit packed file
- - easy and visual using external tools from code processing
- - high level of codegeneration
- - use as build system or project file
 
 Example declare aliases:
 
@@ -143,6 +188,7 @@ Example use in code:
 # Что бы разработка не превратилась в ад ...
 
 Что бы разработка не превратилась в ад нужно соблюдать следующие правила:
+ - Помнить, что алиасы не могут быть удалены, поэтому не засорять лишний раз пространство имён.
  - По-максимуму придерживаться стандарта препроцессора C99. Прибегать к нестандартным директивам только в случае крайней необходимости, если польза и уменьшение размера кода действительно будут значимыми.
  - Думать о том, что люди будут читать обработанный препроцессором код, а следовательно, на выходе должен получаться читабельный и отлаживаемый код. Никакой обфусцированной кодогенерации.
  - Ни в коем случае не использовать данный препроцессор для оформления кода, это приведёт только к накладным расходам во время компиляции и некрасивому коду на выходе.
