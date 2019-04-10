@@ -17,7 +17,7 @@ New c-like preprocessor based on Boost Wave with additional interface. May used 
      - *directive* - old directive name  without spaces *\[A-z\]\[A-z0-9\]\**
      - *directive_arguments* - *optionaly* arguments with spaces and any symbols sended to old directive  
 
-    This directive declare new directive. Aliases register in **\#pragma aliasns** namespace if no flag global. if declare is success replaces with empty string. Alisases with identical names replace each other. Can't use starndard directives names, *insert* name and aliases registred by *system* directive, an any attempt will cause an error. Aliases can't be undefined. May use only in first included *"aliases.h"*, but declared aliases may used in any files after this include, an any attempt will cause an error.  
+    This directive declare new directive. Aliases register in **\#pragma aliasns** namespace if no flag global. if declare is success replaces with empty string. Alisases with identical names replace each other. Can't use starndard directives names, *insert*, *system*, *alias* names and aliases registred by *system* directive, an any attempt will cause an error. Aliases can't be undefined. May use only in first included *"aliases.h"*, but declared aliases may used in any files after this include, an any attempt will cause an error. Other *"aliases.h"* may be included in root *"aliases.h"*.  
 
     Arguments of new directive is appended to *directive_arguments*, but herewith you may use arguments replace *\%s*, *\%s\%*, *\#\#* with next syntax:  
      - *\%s* - replace to all remaining new arguments
@@ -56,7 +56,7 @@ New c-like preprocessor based on Boost Wave with additional interface. May used 
      - *begin<alias_name>* - start block directive for collect future *STDIN*
      - *end<alias_name>* - end block directive, run command, put to *STDIN* this block and replace block to *STDOUT* of command  
     
-    Aliases register in **\#pragma aliasns** namespace if no flag global. if register is success replaces with empty string. Alisases registred with *alias* directive with identical names replace each other. Can't use starndard directives names, *insert* name and aliases registred by *system* directive can't be rewrited, and an any attempt will cause an error. Aliases can't be undefined. May use only in first included *"aliases.h"*, but declared aliases may used in any files after this include, an any attempt will cause an error.  
+    Aliases register in **\#pragma aliasns** namespace if no flag global. if register is success replaces with empty string. Alisases registred with *alias* directive with identical names replace each other. Can't use starndard directives names, *insert*, *system*, *alias* names and aliases registred by *system* directive can't be rewrited, and an any attempt will cause an error. Aliases can't be undefined. May use only in first included *"aliases.h"*, but declared aliases may used in any files after this include, an any attempt will cause an error.  Other *"aliases.h"* may be include in root *"aliases.h"*.  
 
     Use if no flag global:  
 
@@ -87,7 +87,18 @@ New c-like preprocessor based on Boost Wave with additional interface. May used 
  - collect statistic of build files, e-mailing when preprocessing  
 
 # Using and examples
-    
+
+Standard directives, which cannot be rewritten:  
+ - include
+ - if
+ - elif
+ - else if
+ - else
+ - endif
+ - undef
+ - define
+ - pragma
+
 Standard *"aliases.h"*:  
 
     // include guard
@@ -98,18 +109,38 @@ Standard *"aliases.h"*:
     #pragma alias include_once $use_context(%s); pragma aliasns guard; include %s; pragma aliasns endguard
     
     // aliases
-    #pragma alias 
+    #pragma alias require_once include_once
+    #pragma alias req_once include_once
+    #pragma alias import_once include_once
+    #pragma alias inc_once include_once
     
- - require_once = import_once = inc_once = include_once = include %s once
- - require = import = inc = include = depend = depends
- - if
- - elif = else if
- - else
- - endif = fi
- - del = delete = undef = remove
- - def = define = macro = macros
- - alias = directive = direct = declare = declaration = decl
- - system = sys = shell = exec = execute
+    #pragma alias depend include
+    #pragma alias depends pragma insert
+
+    #pragma alias inc include
+    #pragma alias import include
+    #pragma alias require include
+
+    #pragma alias fi endif
+
+    #pragma alias remove undef
+    #pragma alias delete undef
+    #pragma alias del undef
+    
+    #pragma alias macro define
+    #pragma alias macros define
+    #pragma alias def define
+
+    #pragma alias directive alias
+    #pragma alias direct alias
+    #pragma alias declaration alias
+    #pragma alias declare alias
+    #pragma alias decl alias
+    
+    #pragma alias sys system
+    #pragma alias shell system
+    #pragma alias execute system
+    #pragma alias exec system
 
 Examples of *system* directive using:
 
@@ -129,18 +160,6 @@ Examples of *system* directive using:
     
     // try like something like this
     #alias export_exec export %s%; system %s; endexport
-
- - require_once = import_once = inc_once = include_once = include %s once
- - require = import = inc = include = depend = depends
- - if
- - elif = else if
- - else
- - endif = fi
- - del = delete = undef = remove
- - def = define = macro = macros
- - alias = directive = direct = declare = declaration = decl
- - system = sys = shell = exec = execute
-
 
 Example declare aliases:
 
