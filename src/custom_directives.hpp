@@ -50,26 +50,22 @@ public:
             }
             
             ++it;
-            declared[std::string(it->get_value())] = newCtx;
+            declared[it->get_value().data()] = newCtx;
             return true;
+        }
+        else
+        {
+            auto finded = declared.find(it->get_value().data());
+            if (finded != declared.end())
+            {
+                finded->
+            }
         }
 
         return false; // unknown directive
     }
 
-    typedef std::tuple<int, char, char> key_t;
-
-    struct key_hash : public std::unary_function<key_t, std::size_t>
-    {
-        std::size_t operator()(const key_t& k) const
-        {
-            return std::get<0>(k) ^ std::get<1>(k) ^ std::get<2>(k);
-        }
-    };
-
-    typedef std::unordered_map<const key_t, data, key_hash, key_equal> map_t;
-
-    std::unordered_map<TString, ContainerT> declared;
+    std::unordered_map<const void*, ContainerT> declared;
 };
 
 
