@@ -18,3 +18,9 @@ src/Debug/proj.tlog/unsuccessfulbuild
 src/Debug/vc140.pdb
 src/Debug/vc141.pdb
 src/proj.vcxproj.user
+src/Debug/proj.tlog/CL.write.1.tlog
+src/Debug/proj.tlog/CL.read.1.tlog
+src/Debug/custom_directives.obj
+src/.vs/proj/v15/ipch/AutoPCH/a6ed9e554e44226e/PREPROCESSOR.ipch
+src/.vs/proj/v15/ipch/AutoPCH/a0e51be1e51c5287/CUSTOM_DIRECTIVES.ipch
+src/.vs/config/applicationhost.config
