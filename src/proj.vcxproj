@@ -10,10 +10,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="advanced_hooks.cpp" />
     <ClCompile Include="custom_directives.cpp" />
+    <ClCompile Include="Preprocessor.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="advanced_hooks.hpp" />
     <ClInclude Include="custom_directives.hpp" />
+    <ClInclude Include="Preprocessor.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{7F30C66D-AE5E-4581-BEB7-6A861D1C5D50}</ProjectGuid>
